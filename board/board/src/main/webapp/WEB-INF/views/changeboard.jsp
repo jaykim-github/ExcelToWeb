@@ -1,0 +1,198 @@
+<%@ page language="java" contentType="text/html; charset=EUC-KR"
+    pageEncoding="EUC-KR"%>
+<!DOCTYPE html>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" type="text/css" href="/css/style.css" />
+<link rel="stylesheet" type="text/css" href="/css/main.css" />
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<title>수정하기</title>
+<script type="text/javascript">
+var id = localStorage.getItem("ID");
+
+$(document).ready(function(){ 	 
+	$("#btnUpdate").click(function(){
+		$.ajax({
+		    url: "/btnupdate",
+		    type: "POST",
+		    cache:false,
+		    async:true, 
+		    data:$("#updateform").serialize() + "&ID=" + id + "&changecontent=" + $("#changecontent").val(),
+		    dataType:"json",
+		    success: function(result) {
+				if(result.value == 1){
+					alert("수정되었습니다.")
+					location.replace("/board");
+				}else {
+					alert("저장에 실패하였습니다. 관리자에게 문의하여주세요.");
+					return false;
+				} 
+			},
+			beforeSend:function(){
+				if($("#changecontent").val() == ""){
+					alert("수정 내용을 입력해 주세요.");
+					xhr.abort();
+				}
+			}
+	 	});
+		
+	});
+	
+});
+
+</script>
+
+</head>
+<body>
+
+	<div id="wrap" style="width:1000px; margin:30px 20px 30px 20px;">
+			<h4>수정하기</h4>			 
+			<form id="updateform" name="updateform"   method="post" style="padding:10px;">
+				<table class="inputtable">
+				<tbody> 
+				<c:if test="${fn:length(list) > 0}">
+				<c:forEach var="list" items="${list}" varStatus="i">
+				<caption>${list.SERVER_NAME} / ${list.SERVER_MODEL}</caption>
+				<tr>
+				<th>서버명</th><td><input type="text" name="server_name" value="${list.SERVER_NAME}"/></td>
+				<th>서버 모델</th><td><input type="text" name="server_model" value="${list.SERVER_MODEL}"/></td>
+				</tr>
+				<tr>
+				<th>위치</th>
+				<td><select name="location" id="location">
+				<c:if test="${list.LOCATION eq '본사'}">
+					<option value="본사" selected>본사</option>
+					<option value="석포">석포</option>
+				</c:if>
+				
+				<c:if test="${list.LOCATION eq '석포'}">
+					<option value="본사">본사</option>
+					<option value="석포" selected>석포</option>
+				</c:if>
+				</select></td>
+				<th>UNIT 번호</th><td><input type="text" name="unit_n" value="${list.UNIT_N}"/></td>
+				</tr>
+				
+				<tr> 
+				<th>명세</th><td><input type="text" name="server_detail" value="${list.SERVER_DETAIL}"/></td>
+				<th>서버용도</th><td><input type="text" name="server_use" value="${list.SERVER_USE}"/></td>
+				</tr>
+				
+				<tr>
+				<th>담당자</th><td><input type="text" name="manager" value="${list.MANAGER}"/></td>
+				<th>시스템 중요도</th><td><input type="text" name="importance" value="${list.IMPORTANCE}"/></td>
+				</tr>
+				
+				<tr>
+				<th>제조사</th><td><input type="text" name="manufacturer" value="${list.MANUFACTURER}"/></td>
+				<th>랙구분</th><td><input type="text" name="rack_n" value="${list.RACK_N}"/></td>
+				</tr>
+				
+				<tr>
+				<th>사설 IP</th><td><input type="text" name="private_ip" value="${list.PRIVATE_IP}"/></td>
+				<th>공인 IP</th><td><input type="text" name="public_ip" value="${list.PUBLIC_IP}"/></td>
+				</tr>
+				
+				<tr>
+				<th>S/N</th><td><input type="text" name="serial_n" value="${list.SERIAL_N}"/></td>
+				<th>구매 OS 라이선스</th><td><input type="text" name="os_license" value="${list.OS_LICENSE}"/></td>				
+				</tr>
+				
+				<tr>
+				<th>설치된 OS</th><td><input type="text" name="installed_os" value="${list.INSTALLED_OS}"/></td>
+				<th>CPU 사양</th><td><input type="text" name="cpu" value="${list.CPU}"/></td>
+				</tr>
+			
+				<tr>
+				<th>총 Core 수</th><td><input type="text" name="total_core" value="${list.TOTAL_CORE}"/></td>
+				<th>총 메모리 용량</th><td><input type="text" name="total_memory" value="${list.TOTAL_MEMORY}"/></td>
+				</tr>
+				
+				<tr>
+				<th>총 HDD 용량</th><td><input type="text" name="total_hdd" value="${list.TOTAL_HDD}"/></td>
+				<th>HDD 구성</th><td><input type="text" name="hdd_content" value="${list.HDD_CONTENT}"/></td>
+				</tr>
+				
+				<tr>
+				<th>기타 사양</th><td><input type="text" name="etc_specifi" value="${list.ETC_SPECIFI}"/></td>
+				<th>서버 패스워드</th><td><input type="text" name="server_pw" value="${list.SERVER_PW}"/></td>
+				</tr>
+				
+				<tr>
+				<th>서버 구매 금액</th><td><input type="text" name="cost_buying_s" value="${list.COST_BUYING_S}"/></td>
+				<th>DB 모델</th><td><input type="text" name="db_model" value="${list.DB_MODEL}"/></td>
+				</tr>
+				
+				<tr>
+				<th>DB 정보</th><td><input type="text" name="db_info" value="${list.DB_INFO}"/></td>
+				<th>DB 패스워드</th><td><input type="text" name="db_pw" value="${list.DB_PW}"/></td>
+				</tr>
+				
+				<tr>
+				<th>DB 구매금액</th><td><input type="text" name="cost_buying_d" value="${list.COST_BUYING_D}"/></td>
+				<th>WAS</th><td><input type="text" name="was" value="${list.WAS}"/></td>
+				</tr>
+				
+				<tr>
+				<th>기타 구매 건</th><td><input type="text" name="cost_buying_etc" value="${list.COST_BUYING_ETC}"/></td>
+				<th>총 구매 금액(서버+DB+기타)</th><td><input type="text" name="total_cost" value="${list.TOTAL_COST}"/></td>
+				</tr>
+				
+				<tr>
+				<th>구입일자(납품일자)</th><td><input type="text" name="buying_date" value="${list.BUYING_DATE}"/></td>
+				<th>납품업체</th><td><input type="text" name="vendor" value="${list.VENDOR}"/></td>
+				</tr>
+				
+				<tr>
+				<th>유지보수 업체</th><td><input type="text" name="mainten_com" value="${list.MAINTEN_COM}"/></td>
+				<th>유지보수 기간</th><td><input type="text" name="mainten_period" value="${list.MAINTEN_PERIOD}"/></td>
+				</tr>
+				
+				<tr>
+				<th>Vendor/Warranty</th><td><input type="text" name="vendor_warranty" value="${list.VENDOR_WARRANTY}"/></td>
+				<th>보안 SW</th><td><input type="text" name="security_sw" value="${list.SECURITY_SW}"/></td>
+				</tr>
+				
+				<tr>
+				<th>보안 계약기간</th><td><input type="text" name="security_period" value="${list.SECURITY_PERIOD}"/></td>
+				<th>보험가입여부</th>
+				<td><select name="insurance" id="insurance">
+				<c:if test="${list.INSURANCE eq 'O'}">
+					<option value="O" selected>O</option>
+					<option value="X">X</option>
+				</c:if>
+					<c:if test="${list.INSURANCE eq 'X'}">
+					<option value="O" >O</option>
+					<option value="X" selected>X</option>
+					</c:if>
+				</select></td>
+				</tr>
+				
+				<tr>
+				<th>비고</th><td><input type="text" name="note" value="${list.NOTE}"/></td>
+				</tr>
+				<div id ="seq" style="display:none"><input type="text" name="SEQ" value="${list.SEQ}"/>
+				</div>
+
+				</c:forEach>
+				</c:if>
+
+				</tbody>
+				</table>
+			</form>	
+		<br>
+			<h4>수정 내역</h4>	
+			<p><input type="text" id="changecontent" name="changecontent" style=""/></p>
+			<div style="padding:5px;">
+				<button type="button"  value="btnUpdate" id="btnUpdate" >수정</button>
+				&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" id="btnList" onclick="location.href='board'">목록</button>
+			</div>
+</div>
+</body>
+</html>
