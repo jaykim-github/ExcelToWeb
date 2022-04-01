@@ -55,12 +55,14 @@ Tool : Eclipse
 <br>
 형상관리 : SVN
 
-
+---
 <br>
 Example
 <br>
-![슬라이드1](https://user-images.githubusercontent.com/90327424/161297783-14d19835-4e32-4009-b113-f7c2068fa2a6.JPG)
+<img src="board/board/sample4.png" width="300">
 <br>
-![슬라이드2](https://user-images.githubusercontent.com/90327424/161297785-c0273dcb-003d-48d1-b1b5-a97b0080f68e.JPG)
+<img src="board/board/sample1.JPG" width="300">
 <br>
-![슬라이드3](https://user-images.githubusercontent.com/90327424/161297786-800d21ec-bb5c-455d-aa53-7cf277753b7a.JPG)
+<img src="board/board/sample2.JPG" width="300">
+<br>
+<img src="board/board/sample3.JPG" width="300">
