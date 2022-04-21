@@ -30,4 +30,6 @@ public interface BoardDaoMapper {
 	
 	public int countboard(HashMap<String, Object> req_data);
 	
+	public int checkIP(String ip);
+	
 }

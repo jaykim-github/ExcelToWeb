@@ -124,5 +124,12 @@
   		FROM WORKPC_HISTORY
   		WHERE SEQ = #{SEQ}
     </select>
+    
+        <select id="checkPCIP" parameterType="String" resultType="String">
+  		SELECT PC_IP
+  		FROM WORKPC_INFO
+  		WHERE PC_IP = #{pc_ip}
+    </select>
+   
 
 </mapper>

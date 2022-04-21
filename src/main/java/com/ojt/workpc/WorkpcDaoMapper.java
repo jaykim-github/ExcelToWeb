@@ -19,4 +19,5 @@ public interface WorkpcDaoMapper {
 	public int Updateboard(HashMap<String, Object> req_data)throws Exception;
 	public int InsertHistory(HashMap<String, Object> req_data)throws Exception;
 	public int GetHSEQ(int num);
+	public int checkIP(String ip);
 }

@@ -94,4 +94,15 @@ public class BoardDaoMapperRepository implements BoardDaoMapper{
 		System.out.println(result);
 		return result;
 	};
+	
+	@Override
+	public int checkIP(String ip) {
+		String result = sqlSession.selectOne("checkIP", ip);
+		int num = 0;
+		if(ip.equals(result)) {
+			num = 2;
+		}
+		
+		return num;
+	};
 }

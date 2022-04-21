@@ -120,9 +120,15 @@ public class BoardServiceImpl implements BoardService{
 		
 		req_data.put("seq", seq);
 		System.out.println(req_data);
-		
-		//req_data.get("private_ip"), 스트링으로 리턴 값을 받아서 null이 아니면 등록할 수 있도록~ 테스트해야함
-		int result = BoardDaoMapper.Register(req_data);
+		String privateip = (String) req_data.get("private_ip");
+
+		int num = BoardDaoMapper.checkIP(privateip);
+		int result;
+		if(num == 0) {
+			result = BoardDaoMapper.Register(req_data);
+		}else {
+			result = num;
+		}
 		
 		return result;
 	}
@@ -141,10 +147,19 @@ public class BoardServiceImpl implements BoardService{
 		//여기서 selectdetail 값과 올파라미터 값을 비교해서 다른 것 -> 문자열화 시켜 server history에 저장(변경내역)
 		//List<Map<String, Object>> result = BoardDaoMapper.DetailBoard(seq);
 
-		
+		int result3 = 0;
 		int seq = Integer.parseInt(req_data.get("SEQ").toString());
+		
+		String privateip = (String) req_data.get("private_ip");
 
-		int result2 = BoardDaoMapper.Updateboard(req_data);
+		int num2 = BoardDaoMapper.checkIP(privateip);
+		int result2;
+		if(num2 == 0) {
+			result2 = BoardDaoMapper.Updateboard(req_data);
+		}else {
+			result2 = num2;
+		}
+		
 		
 		Map<String, String> change = new HashMap<>();
 		
@@ -161,7 +176,7 @@ public class BoardServiceImpl implements BoardService{
 		history.put("CHANGE_CONTENT",req_data.get("changecontent"));
 		history.put("CHANGE_USER",req_data.get("ID"));
 		history.put("H_SEQ",num);
-		int result3 = 0;
+		
 		
 		System.out.println(history);
 		
@@ -169,6 +184,8 @@ public class BoardServiceImpl implements BoardService{
 		if (result2 == 1) {
 			//수정 성공시 1 
 			result3 = BoardDaoMapper.InsertHistory(history);
+		}else {
+			result3 = result2;
 		}
 		
 		return result3;

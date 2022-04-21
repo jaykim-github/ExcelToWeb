@@ -26,7 +26,10 @@ $(document).ready(function(){
 				if(result.value == 1){
 					alert("저장되었습니다.")
 					location.replace("/board");
-				}else {
+				}else if(result.value == 2){
+					alert("이미 존재하는 IP 입니다.");
+					return false;
+				}else{
 					alert("저장에 실패하였습니다. 관리자에게 문의하여주세요.");
 					return false;
 				} 

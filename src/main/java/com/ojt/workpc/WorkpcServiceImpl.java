@@ -113,8 +113,17 @@ public class WorkpcServiceImpl implements WorkpcService{
 		req_data.put("seq", seq);
 		System.out.println(req_data);
 		
-		int result = WorkpcDaoMapper.Register(req_data);
+		String privateip = (String) req_data.get("pc_ip");
 		
+		int num = WorkpcDaoMapper.checkIP(privateip);
+		int result;
+		
+		if(num == 0) {
+			result = WorkpcDaoMapper.Register(req_data);
+		}else {
+			result = num;
+		}
+
 		return result;
 	}
 	
@@ -137,11 +146,20 @@ public class WorkpcServiceImpl implements WorkpcService{
 	
 	public int Updateboard(HashMap<String, Object> req_data)throws Exception{
 		System.out.println("수정");
-			
+		int result3;
 		int seq = Integer.parseInt(req_data.get("SEQ").toString());
-
-		int result2 = WorkpcDaoMapper.Updateboard(req_data);
 		
+		String privateip = (String) req_data.get("pc_ip");
+		int num2 = WorkpcDaoMapper.checkIP(privateip);
+		int result2;
+		
+		if(num2 == 0) {
+			result2 = WorkpcDaoMapper.Updateboard(req_data);
+		}else {
+			result2 = num2;
+		}
+
+				
 		Map<String, String> change = new HashMap<>();
 		
 		String pattern = "yyyy-MM-dd";
@@ -157,11 +175,12 @@ public class WorkpcServiceImpl implements WorkpcService{
 		history.put("CHANGE_CONTENT",req_data.get("changecontent"));
 		history.put("CHANGE_USER",req_data.get("ID"));
 		history.put("H_SEQ",num);
-		int result3 = 0;
 		
 		if (result2 == 1) {
 			//수정 성공시 1 
 			result3 = WorkpcDaoMapper.InsertHistory(history);
+		}else {
+			result3 = result2;
 		}
 		
 		return result3;
