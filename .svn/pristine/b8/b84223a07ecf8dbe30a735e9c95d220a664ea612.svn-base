@@ -1,0 +1,8 @@
+package com.ojt.login;
+
+public interface LoginDaoMapper {
+
+	public String Login(String id) throws Exception;
+	
+	public int IDExist(String id) ;
+}

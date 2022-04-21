@@ -1,0 +1,107 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="/css/style.css" />
+<link rel="stylesheet" type="text/css" href="/css/main.css" />
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title></title>
+<script type="text/javascript">
+function saveId(){
+	var check_id = document.querySelector("#id");
+	var id = check_id.value;
+
+	localStorage.setItem("ID",id);
+	
+	console.log(id);
+}
+
+
+$(document).ready(function(){
+	$("#login").click(function(){
+		login();
+	});
+
+	$("#id, #password").keypress(function(e){
+		if(e.keyCode == 13){
+			login();
+			return false;
+		}
+	})
+	
+});
+
+function login(){
+	$.ajax({
+	    url: "/login",
+	    type: "POST",
+	    cache:false,
+	    async:true, 
+	    data:$("#logfrm").serialize(),
+	    dataType:"json",
+	    success: function(result) {
+	    	console.log(result);
+	    	console.log(result.value);
+			if(result.value == 1){
+				console.log("login success");
+				//alert("로그인 되었습니다.")
+				saveId();
+				location.replace("/board");
+			}else {
+				alert("ID와 비밀번호를 확인해주세요.");
+				$('#password').focus();
+				return false;
+			} 
+		},
+		beforeSend:function(){
+			//아이디 혹은 비밀번호 기입 되어있는지 확인
+			if(document.logfrm.id.value == ""){
+				alert("ID를 입력해 주세요.");
+				$('#id').focus();
+				return false;
+				
+			}else if(document.logfrm.password.value == ""){
+				alert("비밀번호를 입력해 주세요.");
+				$('#password').focus();
+				return false;
+			}
+		},
+	    
+ 	});
+}
+
+
+</script>
+<title>login page</title>
+</head>
+<body>
+<div id="wrap" style="width:215px; padding : 50px;">
+	<br>
+	<br>
+	<h3>로그인</h3>
+	<br>
+	<form id ="logfrm" name = "logfrm" style="border:10px">
+	 	ID : <input type="text" name="id" id ="id" autofocus/>
+		<br>
+		<br>
+		PW : <input type="password" name="password" id ="password"/>
+	<br>
+	<br>
+	<div style="float:right">
+   <button type="button" class="loginclass" value="login" id="login">로그인</button> 
+	</div>
+   </form>
+	<br>
+	<br>
+	<div>
+   <button type="button" onclick="location.href='findid'">아이디 찾기</button> | <button type="button" onclick="location.href='findpw'">비밀번호 찾기</button> | <button type="button" onclick="location.href='register'">회원가입</button>
+   </div>
+   </div>
+</body>
+</html>

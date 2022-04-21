@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.ojt.login.MemberDaoMapper">
+  	
+  	
+    <select id="login" parameterType="String" resultType="String">
+  		SELECT password FROM MEMBER WHERE id = #{id} 
+    </select>
+    
+    <select id="IDExist" parameterType="String" resultType="int">
+  		SELECT count(id) FROM MEMBER WHERE id = #{id} 
+    </select>
+    
+    <insert id="register" parameterType="java.util.HashMap">
+		INSERT INTO MEMBER(ID, PASSWORD, NAME, EMAIL)
+		VALUES (#{id},#{password},#{name},#{email})
+    </insert>
+      	
+</mapper>

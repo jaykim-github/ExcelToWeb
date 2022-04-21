@@ -1,0 +1,14 @@
+package com.ojt.sample;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+public interface SampleService {
+
+	public ArrayList<HashMap<String, String>> Sample(HttpServletRequest request)  throws Exception;
+	
+}
+

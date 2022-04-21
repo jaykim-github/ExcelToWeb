@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.webportal.yp.dao.SampleDaoMapper">
+  	
+  	
+    <select id="select_test" resultType="java.util.HashMap">
+  		SELECT 
+  			TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI:SS')  AS TIME
+  		FROM DUAL
+    </select>
+    
+
+      	
+</mapper>
+ 

@@ -1,0 +1,34 @@
+package com.ojt.login;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service("LoginService")
+public class LoginServiceImpl implements LoginService{
+	
+	@Autowired
+	private LoginDaoMapper loginDaoMapper;
+	
+	
+	@Override
+	public int Login(String id, String password)  throws Exception{
+		
+		int num = loginDaoMapper.IDExist(id);
+		String result = loginDaoMapper.Login(id);
+		
+		if(num == 1) {
+
+			if(password.equals(result)) {
+				//로그인 성공하면 1리턴
+				return num;
+			}else {
+				//비밀번호 다름
+				num = -1;
+			}
+		}
+
+		return num;
+		
+	}
+
+}

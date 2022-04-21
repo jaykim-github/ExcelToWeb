@@ -1,0 +1,5 @@
+package com.ojt.login;
+
+public class WrongIdPasswordException extends RuntimeException {
+
+}

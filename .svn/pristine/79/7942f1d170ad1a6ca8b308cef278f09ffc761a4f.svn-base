@@ -1,0 +1,43 @@
+package com.ojt.board;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service("BoardService")
+public class BoardServiceImpl implements BoardService{
+	
+	@Autowired
+	private BoardDaoMapper BoardDaoMapper;
+	
+	public List SelectBoardList(String location) throws Exception{
+		List<Map<String, Object>> result = BoardDaoMapper.SelectBoardList(location);
+		return result;
+	}
+	
+	public List searchList(HashMap<String, Object> req_data)throws Exception{
+		List<Map<String, Object>> result = BoardDaoMapper.searchList(req_data);
+		return result;
+	};
+	
+	public List DetailBoard(String board_idx) throws Exception{
+		List<Map<String, Object>> result = BoardDaoMapper.DetailBoard(board_idx);
+		return result;
+	};
+
+	public int Saveboard(HashMap<String, Object> req_data)throws Exception{
+		int result = BoardDaoMapper.Saveboard(req_data);
+		
+		return result;
+	};
+	
+	public int Getidx() {
+		int num = BoardDaoMapper.Getidx();
+		
+		num++;
+		return num;
+	}
+}

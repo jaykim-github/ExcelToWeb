@@ -1,0 +1,103 @@
+package com.ojt.board;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service("BoardService")
+public class BoardServiceImpl implements BoardService{
+	
+	@Autowired
+	private BoardDaoMapper BoardDaoMapper;
+	
+	public List SelectBoardList(String location) throws Exception{
+		List<Map<String, Object>> result = BoardDaoMapper.SelectBoardList(location);
+		return result;
+	}
+	
+	public List searchList(HashMap<String, Object> req_data)throws Exception{
+		List<Map<String, Object>> result = BoardDaoMapper.searchList(req_data);
+		return result;
+	};
+	
+	public List DetailBoard(int seq) throws Exception{
+		List<Map<String, Object>> result = BoardDaoMapper.DetailBoard(seq);
+		return result;
+	};
+
+	public int Saveboard(HashMap<String, Object> req_data)throws Exception{
+		int result = BoardDaoMapper.Saveboard(req_data);
+		
+		return result;
+	};
+	
+	public int Register(HashMap<String, Object> req_data)throws Exception{
+		int result = BoardDaoMapper.Register(req_data);
+		
+		return result;
+	}
+	
+	public int GetSEQ() {
+		int num = BoardDaoMapper.GetSEQ();
+		
+		num++;
+		return num;
+	}
+	
+	public int Updateboard(HashMap<String, Object> req_data)throws Exception{
+		
+		int seq = Integer.parseInt(req_data.get("SEQ").toString());
+		//여기서 selectdetail 값과 올파라미터 값을 비교해서 다른 것 -> 문자열화 시켜 server history에 저장(변경내역)
+		List<Map<String, Object>> result = BoardDaoMapper.DetailBoard(seq);
+		
+		//업데이트 성공시 1
+		int result2 = BoardDaoMapper.Updateboard(req_data);
+
+		System.out.println("상세값 찍어보기");
+		System.out.println(result);
+		
+		Map<String, String> change = new HashMap<>();
+		
+		String pattern = "yyyy-MM-dd";
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+		String date = simpleDateFormat.format(new Date());
+		
+		HashMap<String, Object> history = new HashMap<>();
+		int num = BoardDaoMapper.GetHSEQ(seq);
+		num++;
+		
+		history.put("SEQ",seq);
+		history.put("CHANGE_DATE",date);
+		history.put("CHANGE_CONTENT",req_data.get("changecontent"));
+		history.put("CHANGE_USER",req_data.get("ID"));
+		history.put("H_SEQ",num);
+		int result3 = 0;
+		
+		System.out.println(history);
+		
+		
+		if (result2 == 1) {
+			//수정 성공시 1 
+			result3 = BoardDaoMapper.InsertHistory(history);
+		}
+		
+		return result3;
+	};
+	
+	public List DetailHistory(int seq) throws Exception{
+		List<Map<String, Object>> result = BoardDaoMapper.DetailHistory(seq);
+		return result;
+	};
+	
+	public int DeleteBoard(int seq) throws Exception{
+		int num = BoardDaoMapper.DeleteBoard(seq);
+		return num;
+	};
+	
+	
+}

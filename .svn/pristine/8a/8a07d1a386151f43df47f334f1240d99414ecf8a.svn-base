@@ -1,0 +1,16 @@
+package com.ojt.board;
+
+import java.util.HashMap;
+import java.util.List;
+
+public interface BoardService {
+	public List SelectBoardList(String location) throws Exception;
+	
+	public List searchList(HashMap<String, Object> req_data)throws Exception;
+	
+	public List DetailBoard(String board_idx) throws Exception;
+	
+	public int Getidx();
+	
+	public int Saveboard(HashMap<String, Object> req_data)throws Exception;
+}

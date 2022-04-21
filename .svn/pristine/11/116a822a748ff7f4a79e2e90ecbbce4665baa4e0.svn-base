@@ -1,0 +1,32 @@
+<%@ page language="java" contentType="text/html; charset=EUC-KR"
+    pageEncoding="EUC-KR"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Register</title>
+</head>
+<body>
+<br>
+	<br>
+	<h2>로그인</h2>
+	<form>
+	 	ID : <input type="text" name="id" id ="id"/>
+	</form>
+		<br>
+	<form>
+		PW : <input type="text" name="password" id ="password"/>
+	</form>
+	<form>
+	 	이름 : <input type="text" name="name" id ="name"/>
+	</form>
+		<br>
+	<form>
+		이메일 : <input type="text" name="email" id ="email"/>
+	</form>
+	<br>
+	<br>
+	<input type="submit" value="회원가입" action="/index"> 
+	<br> 
+</body>
+</html>

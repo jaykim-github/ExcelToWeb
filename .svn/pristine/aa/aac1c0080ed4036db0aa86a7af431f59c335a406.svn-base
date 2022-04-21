@@ -1,0 +1,54 @@
+package com.ojt.board;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public class BoardDaoMapperRepository implements BoardDaoMapper{
+	@Autowired
+	@Resource(name="sql")
+	SqlSessionTemplate sqlSession;
+	
+	@Override
+	public List<Map<String, Object>> SelectBoardList(String location) throws Exception{
+		//본사 리스트
+		List<Map<String, Object>> result = sqlSession.selectList("selectboard", location);
+		return result;
+	}
+	
+	@Override
+	public List searchList(HashMap<String, Object> req_data)throws Exception{
+		List<Map<String, Object>> result = sqlSession.selectList("searchboard",req_data);
+		return result;
+	};
+	
+	
+	@Override
+	public List<Map<String, Object>> DetailBoard(String board_idx) throws Exception{
+		//결과값 받아서 List로 넣기
+		List<Map<String, Object>> result = sqlSession.selectList("selectdetail",board_idx);
+		return result;
+	};
+	
+	
+	
+	@Override
+	public int Getidx() {
+		int result = sqlSession.selectOne("get_idx");
+
+		System.out.println(result);
+		return result;
+	}
+	
+	@Override
+	public int Saveboard(HashMap<String, Object> req_data)throws Exception{
+		return sqlSession.insert("save_board", req_data);
+	}
+}

@@ -1,0 +1,12 @@
+package com.ojt.login;
+
+import java.util.HashMap;
+
+public interface LoginDaoMapper {
+
+	public String Login(String id) throws Exception;
+	
+	public int IDExist(String id) ;
+	
+	public int Register(HashMap req_data) throws Exception;
+}

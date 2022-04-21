@@ -1,0 +1,36 @@
+package com.ojt.sample;
+
+//@Controller
+////@RequestMapping("/sample")
+//public class SampleController{
+//
+//	@Autowired
+//	SampleService service;
+//
+//	private static final Logger logger = LoggerFactory.getLogger(SampleController.class);
+//	
+//	@RequestMapping("/sample/test")
+//	public String test(HttpServletRequest request,Locale locale, Model model) throws Exception{
+//		
+//		logger.info("Welcome home! The client locale is {}.", locale);
+//		
+//		Date date = new Date();
+//		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
+//		String formattedDate = dateFormat.format(date);
+//		
+//		ArrayList<HashMap<String, String>> list = service.Sample(request);
+//		
+//		model.addAttribute("serverTime", formattedDate );
+//		model.addAttribute("list", list );
+//		
+//		return "home";
+//	}
+//	
+//	@RequestMapping("/")
+//	public String hello() {
+//		return "index";
+//	}
+	
+//}
+
+

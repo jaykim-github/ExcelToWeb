@@ -1,0 +1,11 @@
+package com.ojt.sample;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+public interface SampleDaoMapper {
+
+	public List<Object> Sample(HashMap req_data) throws Exception;
+
+}

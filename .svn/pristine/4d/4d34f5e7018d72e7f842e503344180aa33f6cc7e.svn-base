@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.ojt.Board.BoardDaoMapper">
+	
+	<select id="boardpage" parameterType="java.util.HashMap"  resultType="java.util.HashMap">
+		SELECT * FROM (
+        SELECT a.*, ROWNUM as rnum FROM (
+               SELECT * FROM SERVER_INFO 
+			   WHERE LOCATION = #{location}
+			   AND DELETED_NY = 'N'
+			   ORDER BY SEQ
+               )
+        a)  WHERE rnum between ((#{page}-1)*10)+1 and (#{page}*10)
+    </select>
+	
+   <select id="searchboard" parameterType="java.util.HashMap"  resultType="java.util.HashMap">
+  		SELECT * FROM (
+        SELECT a.*, ROWNUM as rnum FROM 
+        (SELECT * 
+  		FROM SERVER_INFO 
+  		WHERE DELETED_NY = 'N'
+  		AND LOCATION = #{location}
+  		<choose>
+  		<when test="PRIVATE_IP !=null">
+  		AND PRIVATE_IP LIKE '%'|| #{PRIVATE_IP}||'%'
+  		</when>
+  		<when test="SERVER_NAME !=null">
+  		AND SERVER_NAME LIKE '%'||#{SERVER_NAME}||'%'
+  		</when>
+  		<when test="MANAGER !=null">
+  		AND MANAGER LIKE '%'||#{MANAGER}||'%'
+  		</when>
+  		</choose>
+  		ORDER BY SEQ)
+  		 a)  WHERE rnum between ((#{page}-1)*10)+1 and (#{page}*10)
+    </select>
+    
+    <insert id="registerboard" parameterType="java.util.HashMap" >
+		INSERT INTO SERVER_INFO
+		VALUES(#{seq},#{location},#{rack_n},#{unit_n}, #{server_name}, #{server_detail}
+		,#{server_use},#{manager},#{importance},#{manufacturer},#{server_model},#{private_ip},#{public_ip}
+		,#{serial_n},#{os_license},#{installed_os},#{cpu},#{total_core},#{total_memory},#{total_hdd}
+		,#{hdd_content},#{etc_specifi},#{server_pw},#{cost_buying_s},#{db_model},#{db_info},#{db_pw}
+		,#{cost_buying_d},#{was},#{cost_buying_etc},#{total_cost},#{buying_date},#{vendor},#{mainten_com}
+		,#{mainten_period},#{vendor_warranty},#{security_sw},#{security_period},#{note},'N',#{insurance})
+    </insert>
+    
+     <select id="nextSEQ"  resultType="int">
+  		SELECT MAX(SEQ)
+  		FROM SERVER_INFO 
+    </select>
+    
+     <select id="countBoard" parameterType="java.util.HashMap" resultType="int">
+  		SELECT COUNT(SEQ)
+  		FROM SERVER_INFO
+  		WHERE LOCATION = #{location}
+  		<choose>
+  		<when test="PRIVATE_IP !=null">
+  		AND PRIVATE_IP LIKE '%'|| #{PRIVATE_IP}||'%'
+  		</when>
+  		<when test="SERVER_NAME !=null">
+  		AND SERVER_NAME LIKE '%'||#{SERVER_NAME}||'%'
+  		</when>
+  		<when test="MANAGER !=null">
+  		AND MANAGER LIKE '%'||#{MANAGER}||'%'
+  		</when>
+  		</choose>
+  		AND DELETED_NY = 'N'
+    </select>
+    
+    <select id="selectdetail" parameterType="int"  resultType="java.util.HashMap">
+  		SELECT * 
+  		FROM SERVER_INFO 
+  		WHERE SEQ = #{SEQ}
+  		AND DELETED_NY = 'N'
+    </select>
+    
+    <update id="updateboard" parameterType="java.util.HashMap" >
+    	UPDATE SERVER_INFO
+    	SET 
+		LOCATION = #{location},RACK_N = #{rack_n}, UNIT_N = #{unit_n}, SERVER_NAME = #{server_name},
+    	SERVER_DETAIL =  #{server_detail}, SERVER_USE = #{server_use}, MANAGER = #{manager}, IMPORTANCE = #{importance},
+    	MANUFACTURER = #{manufacturer}, SERVER_MODEL = #{server_model},PRIVATE_IP = #{private_ip}, PUBLIC_IP = #{public_ip}
+		, SERIAL_N = #{serial_n}, OS_LICENSE = #{os_license}, INSTALLED_OS = #{installed_os}, CPU = #{cpu}, TOTAL_CORE = #{total_core},
+		TOTAL_MEMORY = #{total_memory}, TOTAL_HDD = #{total_hdd}, HDD_CONTENT = #{hdd_content}, ETC_SPECIFI = #{etc_specifi},
+		SERVER_PW = #{server_pw}, COST_BUYING_S = #{cost_buying_s}, DB_MODEL = #{db_model}, DB_INFO = #{db_info}, DB_PW =#{db_pw}
+		, COST_BUYING_D = #{cost_buying_d}, WAS = #{was}, COST_BUYING_ETC = #{cost_buying_etc}, TOTAL_COST = #{total_cost}, BUYING_DATE = #{buying_date},
+		VENDOR = #{vendor}, MAINTEN_COM = #{mainten_com}, MAINTEN_PERIOD = #{mainten_period}, VENDOR_WARRANTY = #{vendor_warranty},
+		SECURITY_SW = #{security_sw},SECURITY_PERIOD = #{security_period}, NOTE = #{note}, DELETED_NY = 'N', INSURANCE = #{insurance}
+    	WHERE SEQ = #{SEQ}
+    </update>
+    
+     <update id="deleteboard" parameterType="int" >
+     	UPDATE SERVER_INFO
+     	SET DELETED_NY = 'Y'
+     	WHERE SEQ = #{SEQ}
+     </update>
+    
+     <select id="selecthistory" parameterType="int"  resultType="java.util.HashMap">
+  		SELECT H_SEQ, TO_CHAR(CHANGE_DATE, 'YYYY/MM/DD') as CHANGE_DATE, CHANGE_CONTENT, CHANGE_USER
+  		FROM SERVER_HISTORY 
+  		WHERE SEQ = #{SEQ}
+  		ORDER BY H_SEQ
+    </select>
+      	
+     <insert id="inserthistory" parameterType="java.util.HashMap">
+     	INSERT INTO SERVER_HISTORY
+     	VALUES (#{SEQ}, #{CHANGE_DATE}, #{CHANGE_CONTENT}, #{CHANGE_USER}, #{H_SEQ})
+     </insert>
+      	
+ 
+     <select id="nextHSEQ" parameterType="int" resultType="int">
+  		SELECT NVL(MAX(H_SEQ),0)
+  		FROM SERVER_HISTORY
+  		WHERE SEQ = #{SEQ}
+    </select>
+   
+</mapper>

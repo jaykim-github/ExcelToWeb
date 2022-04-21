@@ -1,0 +1,30 @@
+package com.ojt.sample;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+
+@Repository
+public class SampleDaoMapperRepository implements SampleDaoMapper{	
+
+	@Autowired
+	@Resource(name="sql")
+	SqlSessionTemplate sqlSession;
+	
+
+	@Override
+	public List<Object> Sample(HashMap req_data) throws Exception{
+		/*SQL Query문을 찾아 데이터베이스 연결
+		 * SampleDaoMapper -> xml찾기
+		 * */
+		return sqlSession.selectList("Sample.select_test", req_data);
+	}
+
+}

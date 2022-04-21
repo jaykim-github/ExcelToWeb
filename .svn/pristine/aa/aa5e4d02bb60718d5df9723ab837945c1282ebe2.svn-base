@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.ojt.Workpc.WorkpcDaoMapper">
+
+    <select id="workpcboardpage" parameterType="java.util.HashMap"  resultType="java.util.HashMap">
+		SELECT * FROM (
+        SELECT a.*, ROWNUM as rnum FROM (
+               SELECT * FROM WORKPC_INFO 
+			   WHERE LOCATION = #{location}
+			   AND DELETED_NY = 'N'
+			   ORDER BY SEQ
+               )
+        a)  WHERE rnum between ((#{page}-1)*10)+1 and (#{page}*10)
+    </select>
+    
+    <select id="countpcBoard" parameterType="java.util.HashMap"  resultType="int">
+  		SELECT COUNT(SEQ)
+  		FROM WORKPC_INFO
+  		WHERE LOCATION = #{location}
+  		<choose>
+  		<when test="LOCATION_DIVISION !=null">
+  		AND LOCATION_DIVISION LIKE '%'||#{LOCATION_DIVISION}||'%'
+  		</when>
+  		<when test="DEPARTMENT !=null">
+  		AND DEPARTMENT LIKE '%'|| #{DEPARTMENT}||'%'
+  		</when>
+  		<when test="POSITION !=null">
+  		AND POSITION LIKE '%'||#{POSITION}||'%'
+  		</when>
+  		<when test="EMPLOYEE !=null">
+  		AND EMPLOYEE LIKE '%'||#{EMPLOYEE}||'%'
+  		</when>
+  		</choose>
+  		AND DELETED_NY = 'N'
+    </select>
+    
+     <select id="searchboard2" parameterType="java.util.HashMap"  resultType="java.util.HashMap">
+  		SELECT * FROM (
+        SELECT a.*, ROWNUM as rnum FROM 
+  		(SELECT *
+  		FROM WORKPC_INFO 
+  		WHERE DELETED_NY = 'N'
+  		and LOCATION = #{location}
+  		<choose>
+  		<when test="LOCATION_DIVISION !=null">
+  		AND LOCATION_DIVISION LIKE '%'||#{LOCATION_DIVISION}||'%'
+  		</when>
+  		<when test="DEPARTMENT !=null">
+  		AND DEPARTMENT LIKE '%'|| #{DEPARTMENT}||'%'
+  		</when>
+  		<when test="POSITION !=null">
+  		AND POSITION LIKE '%'||#{POSITION}||'%'
+  		</when>
+  		<when test="EMPLOYEE !=null">
+  		AND EMPLOYEE LIKE '%'||#{EMPLOYEE}||'%'
+  		</when>
+  		</choose>
+  		ORDER BY SEQ)
+  		 a)  WHERE rnum between ((#{page}-1)*10)+1 and (#{page}*10)
+    </select>
+    
+    <insert id="registerpcboard" parameterType="java.util.HashMap" >
+		INSERT INTO WORKPC_INFO
+		VALUES(#{seq},#{location_division},#{location_detail}, #{using}, #{department}
+		,#{position},#{employee},#{pcname_change},#{pcname_change},#{pc_ip},#{pc_division},#{manufacturer},#{pcmodel}
+		,#{pc_os},#{installed_os},#{buying_year},#{buying_month},#{monitor},#{manage_num},#{msoffice}
+		,#{hanguel},#{alyak},#{autocad},#{vaccine},#{install_check},#{inspector},#{replacement_t}
+		,#{note},#{location},'N')
+    </insert>
+    
+     <select id="nextSEQ2"  resultType="int">
+  		SELECT MAX(SEQ)
+  		FROM WORKPC_INFO 
+    </select>
+    
+     <select id="selectpcdetail" parameterType="int"  resultType="java.util.HashMap">
+  		SELECT * 
+  		FROM WORKPC_INFO 
+  		WHERE SEQ = #{SEQ}
+  		AND DELETED_NY = 'N'
+    </select>
+    
+    <select id="selectpchistory" parameterType="int"  resultType="java.util.HashMap">
+  		SELECT H_SEQ, TO_CHAR(CHANGE_DATE, 'YYYY/MM/DD') as CHANGE_DATE, CHANGE_CONTENT, CHANGE_USER
+  		FROM WORKPC_HISTORY
+  		WHERE SEQ = #{SEQ}
+  		ORDER BY H_SEQ
+    </select>
+
+	<update id="deletepcboard" parameterType="int" >
+     	UPDATE WORKPC_INFO
+     	SET DELETED_NY = 'Y'
+     	WHERE SEQ = #{SEQ}
+     </update>
+     
+      <update id="updatepcboard" parameterType="java.util.HashMap" >
+      	UPDATE WORKPC_INFO
+		SET
+		LOCATION_DIVISION = #{location_division}, LOCATION_DETAIL = #{location_detail},USING = #{using},DEPARTMENT = #{department}
+		,POSITION = #{position},EMPLOYEE = #{employee}, PCNAME_CHANGE = #{pcname_change},PC_IP = #{pc_ip}, PC_DIVISION = #{pc_division},
+		 MANUFACTURER = #{manufacturer},PCMODEL = #{pcmodel}, PC_OS = #{pc_os}, INSTALLED_OS = #{installed_os}, BUYING_YEAR = #{buying_year},
+		 BUYING_MONTH = #{buying_month}, MONITOR = #{monitor}, MANAGE_NUM = #{manage_num}, MSOFFICE = #{msoffice}
+		,HANGUEL = #{hanguel}, ALYAK = #{alyak}, AUTOCAD = #{autocad}, VACCINE = #{vaccine}, INSTALL_CHECK = #{install_check},
+		INSPECTOR = #{inspector}, REPLACEMENT_T = #{replacement_t},NOTE = #{note},LOCATION = #{location}
+		WHERE SEQ = #{SEQ}
+      </update>
+     
+    <insert id="insertpchistory" parameterType="java.util.HashMap">
+     	INSERT INTO WORKPC_HISTORY
+     	VALUES (#{SEQ}, #{CHANGE_DATE}, #{CHANGE_CONTENT}, #{CHANGE_USER}, #{H_SEQ})
+     </insert>
+     
+   	<select id="nextHSEQ2" parameterType="int" resultType="int">
+  		SELECT NVL(MAX(H_SEQ),0)
+  		FROM WORKPC_HISTORY
+  		WHERE SEQ = #{SEQ}
+    </select>
+
+</mapper>

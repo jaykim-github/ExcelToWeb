@@ -1,0 +1,20 @@
+package com.ojt.board;
+
+import java.util.HashMap;
+import java.util.List;
+
+public interface BoardDaoMapper {
+
+	public List SelectBoardList(String location) throws Exception;
+	//public List SelectBoardList2() throws Exception;
+	
+	public List DetailBoard(String board_idx) throws Exception;
+	
+	public List searchList(HashMap<String, Object> req_data)throws Exception;
+	
+	public int Getidx();
+	
+	public int Saveboard(HashMap<String, Object> req_data)throws Exception;
+	
+	
+}

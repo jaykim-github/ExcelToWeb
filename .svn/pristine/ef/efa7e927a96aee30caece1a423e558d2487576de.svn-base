@@ -1,0 +1,102 @@
+package com.ojt.board;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service("BoardService")
+public class BoardServiceImpl implements BoardService{
+	
+	@Autowired
+	private BoardDaoMapper BoardDaoMapper;
+	
+	public List SelectBoardList(String location) throws Exception{
+		List<Map<String, Object>> result = BoardDaoMapper.SelectBoardList(location);
+		return result;
+	}
+	
+	public List searchList(HashMap<String, Object> req_data)throws Exception{
+		List<Map<String, Object>> result = BoardDaoMapper.searchList(req_data);
+		return result;
+	};
+	
+	public List DetailBoard(int seq) throws Exception{
+		List<Map<String, Object>> result = BoardDaoMapper.DetailBoard(seq);
+		return result;
+	};
+
+	public int Saveboard(HashMap<String, Object> req_data)throws Exception{
+		int result = BoardDaoMapper.Saveboard(req_data);
+		
+		return result;
+	};
+	
+	public int Register(HashMap<String, Object> req_data)throws Exception{
+		int result = BoardDaoMapper.Register(req_data);
+		
+		return result;
+	}
+	
+	public int GetSEQ() {
+		int num = BoardDaoMapper.GetSEQ();
+		
+		num++;
+		return num;
+	}
+	
+	public int Updateboard(HashMap<String, Object> req_data, String id)throws Exception{
+		int seq = Integer.parseInt(req_data.get("SEQ").toString());
+		
+		//여기서 selectdetail 값과 올파라미터 값을 비교해서 다른 것 -> 문자열화 시켜 server history에 저장(변경내역)
+		List<Map<String, Object>> result = BoardDaoMapper.DetailBoard(seq);
+		
+		Map<String, String> change = new HashMap<>();
+		
+		//수정된 key와 value값만 change 맵에 put
+		for(String key : req_data.keySet()) {
+			if(!result.get(0).containsValue(req_data.get(key))) {
+				if(req_data.get(key) != "") {
+					change.put(key,(String) req_data.get(key));	
+				};
+			}
+		};
+		
+		//히스토리에 넣을거 정리하기 - change
+		String changecon = "";
+		for(String key : change.keySet()) {
+			changecon += key + "/" + change.get(key) + " ";
+		}
+		
+		String pattern = "yyyy-MM-dd";
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+		String date = simpleDateFormat.format(new Date());
+		
+		System.out.println(changecon);
+		HashMap<String, Object> history = new HashMap<>();
+		
+		history.put("SEQ",seq);
+		history.put("CHANGE_DATE",date);
+		history.put("CHANGE_CONTENT",changecon);
+		history.put("CHANGE_USER",id);
+		int result3 = 0;
+		
+		//업데이트 성공시 1
+		int result2 = BoardDaoMapper.Updateboard(req_data);
+		
+		if (result2 != 1) {
+			//수정 성공시 1
+			result3 = BoardDaoMapper.InsertHistory(history);
+		}
+		
+		System.out.println(history);
+		
+		return result2;
+	};
+	
+	
+}

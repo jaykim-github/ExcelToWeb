@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.ojt.Board.BoardDaoMapper">
+
+   <select id="selectboard" parameterType="String"  resultType="java.util.HashMap">
+  		SELECT SEQ, RACK_N,PRIVATE_IP,SERVER_NAME,SERVER_DETAIL,MANAGER 
+  		FROM SERVER_INFO 
+  		WHERE LOCATION = #{location}
+  		AND DELETED_NY = 'N'
+    </select>
+
+   <select id="searchboard" parameterType="java.util.HashMap"  resultType="java.util.HashMap">
+  		SELECT SEQ, RACK_N,PRIVATE_IP,SERVER_NAME,SERVER_DETAIL,MANAGER 
+  		FROM SERVER_INFO 
+  		WHERE DELETED_NY = 'N'
+  		<choose>
+  		<when test="PRIVATE_IP !=null">
+  		AND PRIVATE_IP LIKE '%'|| #{PRIVATE_IP}||'%'
+  		</when>
+  		<when test="SERVER_NAME !=null">
+  		AND SERVER_NAME LIKE '%'||#{SERVER_NAME}||'%'
+  		</when>
+  		<when test="MANAGER !=null">
+  		AND MANAGER LIKE '%'||#{MANAGER}||'%'
+  		</when>
+  		</choose>
+    </select>
+
+      	
+</mapper>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.ojt.Board.BoardDaoMapper">
+<resultMap type="HashMap" id = "boardlist">
+	<id column="BOARD_IDX" property="BOARD_IDX"/>
+	<id column="TITLE" property="TITLE"/>
+	<id column="CREATE_ID" property="CREATE_ID"/>
+	<id column="CONTENT" property="CONTENT"/>
+	<id column="CREATE_DATE" property="CREATE_DATE"/>
+	<id column="COUNT" property="COUNT"/>
+	<id column="UPDATE_DATE" property="UPDATE_DATE"/>
+	<id column="DELETED_YN" property="DELETED_YN"/>
+</resultMap>
+  	  
+    <select id="selectboard" resultMap="boardlist" >
+    	SELECT *
+    	FROM BOARD
+    	WHERE DELETED_YN = 'N'
+    	ORDER BY BOARD_IDX
+    </select>
+    
+    <select id="get_idx" resultType="int">
+    	SELECT MAX(BOARD_IDX) FROM BOARD
+    </select>
+    
+    <insert id="save_board" parameterType="java.util.HashMap" >
+		INSERT INTO BOARD(BOARD_IDX, TITLE, CREATE_ID, CONTENT,CREATE_DATE, COUNT, DELETED_YN)
+		VALUES (#{board_idx},#{title},#{create_id}, #{content}, SYSDATE , 0,'N')
+    </insert>
+      	
+</mapper>
