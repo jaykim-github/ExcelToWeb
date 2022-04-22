@@ -123,5 +123,22 @@
   		FROM SERVER_INFO
   		WHERE PRIVATE_IP = #{private_ip}
     </select>
-   
+    
+    <!-- 정렬용 아직 미정 -->
+   	<select id="orderpage" parameterType="java.util.HashMap"  resultType="java.util.HashMap">
+		SELECT * FROM (
+        SELECT a.*, ROWNUM as rnum FROM (
+               SELECT * FROM SERVER_INFO 
+			   WHERE LOCATION = #{location}
+			   AND DELETED_NY = 'N'
+			   ORDER BY SEQ
+               )a
+         ) 
+         WHERE rnum between ((#{page}-1)*10)+1 and (#{page}*10)
+        <choose>
+        <when test="newregister !=null" >
+        order by a.ROWNUM DESC
+        </when>
+        </choose>
+    </select>
 </mapper>

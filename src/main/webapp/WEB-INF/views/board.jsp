@@ -296,6 +296,9 @@ li a.current{font-weight : bold; border-bottom: 2px solid #23262d;}
 		&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" id="location2" value="location2"> 석포 </button> 
 		<br>
 		<br>
+		<button style="float: right;" type="button" id="checkping" value="checkping"> 네트워크 연결</button> 
+		<br>
+		<br>
 		</div>
 		<form id = "search" method="post" >
 		<h4>검색</h4>
@@ -320,6 +323,9 @@ li a.current{font-weight : bold; border-bottom: 2px solid #23262d;}
 		<br>
 		
 		<h4>서버 리스트</h4>
+		<br>
+		<button style="float: right;" type="button" id="newregister" value="newregister"> 최신순 </button> 
+		<br>
 		<br>
 		<div id = "display">
 		<table class="datatable">
