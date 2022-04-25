@@ -35,6 +35,18 @@ public class BoardController {
 	}
 	
 	@ResponseBody
+	@RequestMapping(value = "/checkping",  method = {RequestMethod.GET,RequestMethod.POST})
+	public ModelAndView checkping(HttpServletRequest request) throws Exception {
+		ModelAndView mv = new ModelAndView("/checkping");
+		
+		List<Map<String, Object>> result = service.pingList();
+		
+		mv.addObject("list", result);
+		System.out.println(result);
+		return mv;
+	}
+	
+	@ResponseBody
 	@RequestMapping(value = "/location2",  method = {RequestMethod.GET,RequestMethod.POST})
 	public  List<Map<String, Object>> boardlist2(HttpServletRequest	 request) throws Exception {
 

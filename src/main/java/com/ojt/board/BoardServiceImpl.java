@@ -1,6 +1,8 @@
 package com.ojt.board;
 
+import java.net.InetAddress;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -48,6 +50,29 @@ public class BoardServiceImpl implements BoardService{
 		map.put("endpage",endpage);
 		map.put("startpage",startpage);
 		result.add(map);
+		
+		return result;
+	}
+	
+	public List pingList() throws Exception{
+		
+		List<Map<String, Object>> result = new ArrayList();
+		String ipList[] = {"211.35.173.43","211.35.173.45","211.35.173.22","211.35.173.7","211.35.173.24","211.35.173.25","211.35.173.21",
+		                     "121.134.200.227","121.134.200.226","211.35.173.12","211.35.173.6","211.35.173.33","211.35.173.11","211.35.173.18"};
+		String ipName[] = {"SAP ERP ECC 운영(YP-PRD)","SAP ERP CA 운영(CAPCI)","조업경영정보 시스템(YPZBBI)","웹포털 운영(ypwebportal)","펌뱅킹 서버(FIRM BANK)","ESS 연말정산 서버(YETA)",
+							"홈페이지 서버(homepage)", "스팸 아웃(SpamOut)","그룹웨어 운영서버(YPZBGWPRD)","그룹웨어 DB서버(YPZBGWDB)", "전산팀 파일공유 서버","백업 DISK 장비",
+							"안전보건환경 시스템(YPSHE)","PDA 중계 서버"};
+		
+		for(int i = 0; i<ipList.length; i++) {
+			HashMap<String, Object> map = new HashMap<>();
+			map.put("seq", i+1);
+			map.put("servername", ipName[i]);
+			map.put("ipname", ipList[i]);
+			map.put("status",InetAddress.getByName(ipList[i]).isReachable(1000));
+			result.add(map);
+		}
+		
+		//System.out.println(result);
 		
 		return result;
 	}

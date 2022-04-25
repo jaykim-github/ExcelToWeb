@@ -180,7 +180,9 @@ function pagelist3(){
 	})
 }
 
-
+function openPopUp(){
+	window.open("/checkping", "checkPing","width=845, height=420, top=150, left=200");
+}
 
 
 function resultHtml(list){
@@ -296,7 +298,7 @@ li a.current{font-weight : bold; border-bottom: 2px solid #23262d;}
 		&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" id="location2" value="location2"> 석포 </button> 
 		<br>
 		<br>
-		<button style="float: right;" type="button" id="checkping" value="checkping"> 네트워크 연결</button> 
+		<button style="float: right;" type="button" onclick="openPopUp()"> 네트워크 연결</button> 
 		<br>
 		<br>
 		</div>
