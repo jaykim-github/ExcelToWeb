@@ -1,6 +1,8 @@
 package com.ojt.board;
 
+import java.net.InetAddress;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -18,11 +20,8 @@ public class BoardServiceImpl implements BoardService{
 	public List SelectBoardList(String location ,int page) throws Exception{
 		if(location.equals("location1")) {
 			location = "본사";
-			System.out.println("본사 리스트");
 		}else if(location.equals("본사")) {
-			System.out.println("본사 리스트");
 		}else{
-			System.out.println("석포 리스트");
 			location = "석포";
 		}
 		
@@ -52,15 +51,33 @@ public class BoardServiceImpl implements BoardService{
 		return result;
 	}
 	
+	public List checkping() throws Exception{
+		List<Map<String, Object>> result = new ArrayList();
+		
+		String[] servername = {};
+		String[] ipname = {};
+		
+		for(int i = 0; i<servername.length; i++) {
+			HashMap<String, Object> map = new HashMap<>();
+			map.put("seq", i+1);
+			map.put("servername", servername[i]);
+			map.put("ipname", ipname[i]);
+			map.put("status", InetAddress.getByName(ipname[i]).isReachable(1000));
+			
+			result.add(map);
+		}
+		
+		//System.out.println(result);
+		return result;
+		
+	}
+	
 	public List searchList(String searchid, String searchtxt, String location, int page)throws Exception{
 		System.out.println("검색");
 		if(location.equals("location1")) {
 			location = "본사";
-			System.out.println("본사 리스트");
 		}else if(location.equals("본사")) {
-			System.out.println("본사 리스트");
 		}else{
-			System.out.println("석포 리스트");
 			location = "석포";
 		}
 		

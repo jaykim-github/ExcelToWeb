@@ -20,5 +20,7 @@ public interface BoardService {
 	
 	public List DetailHistory(int seq) throws Exception;
 	public int DeleteBoard(int seq) throws Exception;
+	
+	public List checkping() throws Exception;
 
 }

@@ -181,7 +181,9 @@ function pagelist3(){
 }
 
 
-
+function openPopup(){
+	window.open("/checkping","popup","width=850, height=550, top=150, left=200");
+}
 
 function resultHtml(list){
 	var html = "<table class='datatable'>";
@@ -296,7 +298,7 @@ li a.current{font-weight : bold; border-bottom: 2px solid #23262d;}
 		&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" id="location2" value="location2"> 석포 </button> 
 		<br>
 		<br>
-		<button style="float: right;" type="button" id="checkping" value="checkping"> 네트워크 연결</button> 
+		<button style="float: right;" type="button" id="checkping" onclick="openPopup()"> 네트워크 연결</button> 
 		<br>
 		<br>
 		</div>
